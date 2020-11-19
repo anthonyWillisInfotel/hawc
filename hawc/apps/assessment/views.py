@@ -7,7 +7,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
 from django.db.models import Count
-from django.http import HttpResponseNotAllowed, HttpResponseRedirect
+from django.http import HttpResponseNotAllowed, HttpResponseRedirect, JsonResponse
 from django.shortcuts import HttpResponse, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
@@ -615,7 +615,7 @@ class Healthcheck(View):
 
     def get(self, request, *args, **kwargs):
         # TODO - add cache check and celery worker check
-        return HttpResponse(json.dumps({"status": "ok"}), content_type="application/json")
+        return JsonResponse({"status": "ok"})
 
 
 # log / blog

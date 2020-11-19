@@ -1,7 +1,13 @@
 import json
 from typing import Dict
 
-from django.http import Http404, HttpResponse, HttpResponseNotAllowed, HttpResponseRedirect
+from django.http import (
+    Http404,
+    HttpResponse,
+    HttpResponseNotAllowed,
+    HttpResponseRedirect,
+    JsonResponse,
+)
 from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import FormView, RedirectView
@@ -32,7 +38,7 @@ class SummaryTextJSON(BaseDetail):
 
     def get(self, request, *args, **kwargs):
         content = self.model.get_assessment_descendants(self.assessment.id, json_encode=True)
-        return HttpResponse(content, content_type="application/json")
+        return JsonResponse(content)
 
 
 class SummaryTextList(BaseList):
@@ -50,9 +56,7 @@ def validSummaryTextChange(assessment_id):
         "status": "ok",
         "content": models.SummaryText.get_assessment_descendants(assessment_id, json_encode=False),
     }
-    return HttpResponse(
-        json.dumps(response, cls=HAWCDjangoJSONEncoder), content_type="application/json"
-    )
+    return JsonResponse(response)
 
 
 class SummaryTextCreate(BaseCreate):
@@ -203,7 +207,7 @@ class VisualizationCreateTester(VisualizationCreate):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         response = form.instance.get_editing_dataset(request)
-        return HttpResponse(response, content_type="application/json")
+        return JsonResponse(response)
 
 
 class VisualizationUpdate(BaseUpdate):

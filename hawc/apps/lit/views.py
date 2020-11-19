@@ -3,6 +3,7 @@ from typing import List
 
 from django.forms.models import model_to_dict
 from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
@@ -249,7 +250,7 @@ class TagReferences(TeamMemberOrHigherMixin, FormView):
         if not self.request.is_ajax():
             raise Http404
         response = self.update_reference_tags()
-        return HttpResponse(json.dumps(response), content_type="application/json")
+        return JsonResponse(response)
 
     def update_reference_tags(self):
         # find reference, check that the assessment is the same as the one we
@@ -562,7 +563,7 @@ class RefsByTagJSON(BaseDetail):
         self.response = response
 
     def render_to_response(self, context, **response_kwargs):
-        return HttpResponse(json.dumps(self.response), content_type="application/json")
+        return JsonResponse(self.response)
 
 
 class RefVisualization(BaseDetail):
@@ -615,7 +616,7 @@ class TagsJSON(BaseDetail):
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         tags = models.ReferenceFilterTag.get_all_tags(self.object.id)
-        return HttpResponse(json.dumps(tags), content_type="application/json")
+        return JsonResponse(tags)
 
 
 class TagsUpdate(ProjectManagerOrHigherMixin, DetailView):
