@@ -155,6 +155,12 @@ class AssessmentViewset(viewsets.ReadOnlyModelViewSet):
         return self.model.objects.all()
 
 
+class SpeciesViewset(viewsets.GenericViewSet):
+    @action(detail=False, url_path=r"(?P<pk>\d+)/strains")
+    def strain(self, request, pk: int):
+        return Response(models.Strain.objects.filter(species_id=pk).values("id", "name"))
+
+
 class AssessmentEditViewset(viewsets.ModelViewSet):
     assessment_filter_args = ""
     permission_classes = (AssessmentLevelPermissions,)

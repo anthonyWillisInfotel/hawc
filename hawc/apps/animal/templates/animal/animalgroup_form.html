@@ -49,6 +49,7 @@ $(document).ready(function() {
             var onSpeciesChange = function(e, onStrainUpdateComplete){
                 // only show proper strains for a given species
                 var selected = $('#id_strain option:selected').val(),
+                    species_id = $('#id_species').val(),
                     update_strain_opts = function(d){
                         var opts = _.map(d, function(v, i){
                             return printf('<option value="{0}">{1}</option>', v.id, v.name);
@@ -62,11 +63,9 @@ $(document).ready(function() {
                             onStrainUpdateComplete();
                         }
                     }
-                $.get(
-                    '{% url "assessment:get_strains" %}',
-                    {species: $('#id_species').val()},
-                    update_strain_opts
-                );
+                if (species_id){
+                    $.get(printf('/assessment/api/species/{0}/strains/', species_id), update_strain_opts);
+                }
             };
 
             $('#id_comments').quillify();
