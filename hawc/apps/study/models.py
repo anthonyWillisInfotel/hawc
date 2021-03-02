@@ -15,6 +15,7 @@ from ..assessment.models import Assessment
 from ..assessment.serializers import AssessmentSerializer
 from ..common.helper import HAWCDjangoJSONEncoder, SerializerHelper, cleanHTML
 from ..lit.models import Reference, Search
+from ..lit import constants as litconstants
 from . import managers
 
 
@@ -144,7 +145,7 @@ class Study(Reference):
 
     @classmethod
     @transaction.atomic
-    def copy_across_assessment(cls, studies, assessment, cw=None, copy_rob=False):
+    def copy_across_assessment(cls, studies, target_assessment, cw=None, copy_rob=False):
 
         # copy selected studies from one assessment to another.
         if cw is None:
@@ -159,17 +160,18 @@ class Study(Reference):
         if len(source_assessment) != 1:
             raise ValueError("Studies must come from the same assessment")
         source_assessment = source_assessment[0]
-        cw[Assessment.COPY_NAME][source_assessment] = assessment.id
+        cw[Assessment.COPY_NAME][source_assessment] = target_assessment.id
 
         # copy studies; flag if any epi-meta studies exist
         any_epi_meta = False
         for study in studies:
-            logging.info(f"Copying study {study.id} to assessment {assessment.id}")
+            logging.info(f"Copying study {study.id} to assessment {target_assessment.id}")
 
             # get child-types and copy
             children = []
 
             if copy_rob:
+                raise ValueError("No tests in test suite; not implemented")
                 children.extend(list(study.riskofbiases.all().order_by("id")))
 
             if study.bioassay:
@@ -179,6 +181,7 @@ class Study(Reference):
                 children.extend(list(study.study_populations.all().order_by("id")))
 
             if study.in_vitro:
+                raise ValueError("No tests in test suite; not implemented")
                 children.extend(
                     itertools.chain(
                         study.ivchemicals.all().order_by("id"),
@@ -188,6 +191,7 @@ class Study(Reference):
                 )
 
             if study.epi_meta:
+                raise ValueError("No tests in test suite; not implemented")
                 any_epi_meta = True
                 children.extend(list(study.meta_protocols.all().order_by("id")))
 
@@ -214,7 +218,9 @@ class Study(Reference):
         # copy reference and identifiers
         # (except RIS which is assessment-specific)
         ref = self.reference_ptr
-        idents = ref.identifiers.filter(database__in=[0, 1, 2]).values_list("id", flat=True)
+        idents = ref.identifiers.filter(
+            database__in=[litconstants.PUBMED, litconstants.HERO]
+        ).values_list("id", flat=True)
         ref.id = None
         ref.assessment_id = cw[Assessment.COPY_NAME][self.assessment_id]
         ref.save()
