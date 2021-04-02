@@ -379,6 +379,16 @@ class TestClient(LiveServerTestCase, TestCase):
         response = client.riskofbias.full_data(self.db_keys.assessment_client)
         assert isinstance(response, pd.DataFrame)
 
+    def test_riskofbias_metrics(self):
+        client = HawcClient(self.live_server_url)
+        response = client.riskofbias.metrics(self.db_keys.assessment_client)
+        assert isinstance(response, pd.DataFrame) and response.shape[0] > 0
+
+    def test_riskofbias_reviews(self):
+        client = HawcClient(self.live_server_url)
+        response = client.riskofbias.reviews(self.db_keys.assessment_final)
+        assert isinstance(response, list) and len(response) > 0
+
     def test_riskofbias_create(self):
         """
         Test all the create methods.  This only checks the happy-path and confirms that the client
@@ -421,6 +431,11 @@ class TestClient(LiveServerTestCase, TestCase):
     #####################
     # StudyClient tests #
     #####################
+
+    def test_study_list(self):
+        client = HawcClient(self.live_server_url)
+        response = client.study.studies(self.db_keys.assessment_client)
+        assert isinstance(response, pd.DataFrame) and response.shape[0] > 0
 
     def test_study_create(self):
         client = HawcClient(self.live_server_url)

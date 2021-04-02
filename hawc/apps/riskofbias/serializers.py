@@ -32,8 +32,6 @@ class AssessmentDomainSerializer(serializers.ModelSerializer):
 
 
 class RiskOfBiasDomainSerializer(serializers.ModelSerializer):
-    assessment = AssessmentMiniSerializer(read_only=True)
-
     class Meta:
         model = models.RiskOfBiasDomain
         fields = "__all__"

@@ -511,6 +511,33 @@ class RiskOfBiasClient(BaseClient):
         url = f"{self.session.root_url}/rob/api/assessment/bulk_rob_copy/"
         return self.session.post(url, payload).json()
 
+    def metrics(self, assessment_id: int) -> pd.DataFrame:
+        """
+        Retrieves all metrics for the given assessment.
+
+        Args:
+            assessment_id (int): Assessment ID
+
+        Returns:
+            pd.DataFrame: A dataframe of metrics
+        """
+        url = f"{self.session.root_url}/rob/api/metrics/?assessment_id={assessment_id}"
+        response_json = self.session.get(url).json()
+        return pd.DataFrame(response_json)
+
+    def reviews(self, assessment_id: int) -> Dict:
+        """
+        Retrieves all reviews for the given assessment.
+
+        Args:
+            assessment_id (int): Assessment ID
+
+        Returns:
+            pd.DataFrame: A dictionary of reviews
+        """
+        url = f"{self.session.root_url}/rob/api/review/?assessment_id={assessment_id}"
+        return self.session.get(url).json()
+
 
 class EpiClient(BaseClient):
     """
@@ -709,6 +736,20 @@ class StudyClient(BaseClient):
     """
     Client class for study requests.
     """
+
+    def studies(self, assessment_id: int) -> pd.DataFrame:
+        """
+        Retrieves all studies for the given assessment.
+
+        Args:
+            assessment_id (int): Assessment ID
+
+        Returns:
+            pd.DataFrame: A dataframe for a study
+        """
+        url = f"{self.session.root_url}/study/api/study/?assessment_id={assessment_id}"
+        response_json = self.session.get(url).json()
+        return pd.DataFrame(response_json)
 
     def create(self, reference_id: int, data: Optional[Dict] = None) -> Dict:
         """

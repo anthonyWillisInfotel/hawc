@@ -96,8 +96,10 @@ class RiskOfBias(viewsets.ModelViewSet):
     lookup_value_regex = re_digits
 
     def get_queryset(self):
-        return self.model.objects.all().prefetch_related(
-            "study", "author", "scores__metric__domain"
+        return (
+            self.model.objects.all()
+            .select_related("study__assessment__rob_settings", "author")
+            .prefetch_related("scores__metric__domain", "scores__overridden_objects")
         )
 
     def perform_update(self, serializer):
@@ -169,8 +171,15 @@ class AssessmentMetricScoreViewset(AssessmentViewset):
 class AssessmentScoreViewset(AssessmentEditViewset):
     model = models.RiskOfBiasScore
     pagination_class = DisabledPagination
-    assessment_filter_args = "metric__domain_assessment"
+    assessment_filter_args = "metric__domain__assessment_id"
     serializer_class = serializers.RiskOfBiasScoreSerializer
+
+    def get_queryset(self):
+        return (
+            self.model.objects.all()
+            .select_related("metric__domain", "riskofbias__study")
+            .prefetch_related("overridden_objects")
+        )
 
     def get_assessment(self, request, *args, **kwargs):
         assessment_id = get_assessment_id_param(request)
