@@ -60,7 +60,12 @@
         djangoForm = $('#data form').get(0),
         mainElement = $("#main");
 
-      if (config.visual_type === 6){
+      if (config.visual_type === 2){
+        window.app.summaryFormsStartup(function (summaryForms) {
+          summaryForms.robHeatmapFormAppStartup(mainElement.get(0), config, djangoForm);
+          mainElement.show();
+        });
+      } else if (config.visual_type === 6){
         window.app.summaryFormsStartup(function (summaryForms) {
           summaryForms.exploratoryHeatmapFormAppStartup(mainElement.get(0), config, djangoForm);
           mainElement.show();
@@ -74,7 +79,7 @@
         summaryForms.VisualForm.create(config.visual_type, mountElement, config);
       }
 
-      if (config.visual_type !== 6) {
+      if (config.visual_type !== 2 && config.visual_type !== 6) {
         window.app.smartTagsStartup(function (smartTags) {
           new smartTags.SmartTagEditor($('#id_caption'), { submitEl: '#visualForm' });
         });

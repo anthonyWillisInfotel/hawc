@@ -1,5 +1,6 @@
 import BaseStore from "./BaseStore";
 import ExploratoryHeatmapStore from "./ExploratoryHeatmapStore";
+import RobHeatmapStore from "./RobHeatmapStore";
 
 class ExploratoryHeatmap {
     constructor() {
@@ -8,8 +9,14 @@ class ExploratoryHeatmap {
     }
 }
 
-const createExploratoryHeatmapStore = function() {
-    return new ExploratoryHeatmap();
-};
+class RobHeatmap {
+    constructor() {
+        this.base = new BaseStore(this);
+        this.subclass = new RobHeatmapStore(this);
+    }
+}
 
-export {createExploratoryHeatmapStore};
+const createExploratoryHeatmapStore = () => new ExploratoryHeatmap(),
+    createRobHeatmapStore = () => new RobHeatmap();
+
+export {createExploratoryHeatmapStore, createRobHeatmapStore};
