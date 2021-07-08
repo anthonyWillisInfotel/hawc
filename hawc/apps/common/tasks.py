@@ -3,6 +3,8 @@ from celery.utils.log import get_task_logger
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 
+from .worker_health import worker_healthcheck
+
 logger = get_task_logger(__name__)
 
 
@@ -14,7 +16,5 @@ def diagnostic_celery_task(id_: str):
 
 
 @task
-def worker_healthcheck():
-    from .diagnostics import worker_healthcheck
-
+def worker_healthcheck_push():
     worker_healthcheck.push()

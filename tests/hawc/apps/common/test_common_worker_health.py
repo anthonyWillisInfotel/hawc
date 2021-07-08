@@ -2,7 +2,7 @@ import pytest
 from django.conf import settings
 from matplotlib.axes import Axes
 
-from hawc.apps.common.diagnostics import worker_healthcheck
+from hawc.apps.common.worker_health import worker_healthcheck
 
 
 def has_redis():

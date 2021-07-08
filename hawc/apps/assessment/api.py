@@ -21,9 +21,9 @@ from rest_framework.response import Response
 
 from hawc.services.epa import dsstox
 
-from ..common.diagnostics import worker_healthcheck
 from ..common.helper import FlatExport, create_uuid, re_digits, tryParseInt
 from ..common.renderers import PandasRenderers, SvgRenderer
+from ..common.worker_health import worker_healthcheck
 from ..lit import constants
 from . import models, serializers
 from .actions import media_metadata_report

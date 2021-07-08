@@ -6,7 +6,7 @@ from django.core.cache import cache
 from django.urls import reverse
 from rest_framework.test import APIClient
 
-from hawc.apps.common.diagnostics import worker_healthcheck
+from hawc.apps.common.worker_health import worker_healthcheck
 
 
 def has_redis():
