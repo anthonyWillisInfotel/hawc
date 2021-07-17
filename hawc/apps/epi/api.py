@@ -199,6 +199,8 @@ class StudyPopulation(EditPermissionsCheckMixin, AssessmentEditViewset):
             # Client can supply an id, or the name of the criteria entry (and then we'll look it up for them - or create it if needed)
             if data_key in self.request.data:
                 data_probe = self.request.data[data_key]
+                if data_probe is None:
+                    continue
 
                 fixed = []
                 for el in data_probe:
@@ -430,6 +432,8 @@ class Result(EditPermissionsCheckMixin, AssessmentEditViewset):
             # Client can supply an id, or the name of the factor entry (and then we'll look it up for them - or create it if needed)
             if data_key in self.request.data:
                 data_probe = self.request.data[data_key]
+                if data_probe is None:
+                    continue
 
                 fixed = []
                 for el in data_probe:
