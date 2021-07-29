@@ -91,6 +91,7 @@ urlpatterns = [
         ),
         name="openapi",
     ),
+    path("oidc/", include("mozilla_django_oidc.urls")),
 ]
 
 # only for DEBUG, want to use static server otherwise

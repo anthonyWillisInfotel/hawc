@@ -5,8 +5,8 @@
 
 {% block content %}
 {% crispy form %}
+<a href="{% url 'oidc_authentication_init' %}">Login.gov</a>
 {% endblock content %}
-
 {% block extrajs %}
   <script type="text/javascript">
     document.getElementById('id_username').focus();

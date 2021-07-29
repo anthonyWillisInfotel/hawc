@@ -44,3 +44,7 @@ python-pptx==0.6.19
 
 # bmds; https://github.com/shapiromatron/bmds/commit/36c102cfc0340ad98efcb57686dfcd72a8a02895
 vendor/bmds-0.11.0.tar.gz
+
+# login.gov
+mozilla-django-oidc
+pyjwt

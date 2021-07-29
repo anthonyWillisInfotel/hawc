@@ -100,6 +100,7 @@ INSTALLED_APPS = (
     "selectable",
     "crispy_forms",
     "webpack_loader",
+    "mozilla_django_oidc",
     # Custom apps
     "hawc.apps.common",
     "hawc.apps.myuser",
@@ -119,6 +120,23 @@ INSTALLED_APPS = (
     "hawc.apps.materialized",
 )
 
+RSA_KEY_FP = os.environ["RSA_KEY_FP"]
+
+AUTHENTICATION_BACKENDS = ("hawc.main.auth.LoginGovAuthenticationBackend",)
+
+OIDC_RP_SIGN_ALGO = "RS256"
+OIDC_CREATE_USER = False
+
+OIDC_AUTH_REQUEST_EXTRA_PARAMS = {"acr_values": "http://idmanagement.gov/ns/assurance/ial/1"}
+
+OIDC_RP_CLIENT_ID = os.environ["OIDC_RP_CLIENT_ID"]
+OIDC_RP_CLIENT_SECRET = ""
+OIDC_OP_JWKS_ENDPOINT = "https://idp.int.identitysandbox.gov/api/openid_connect/certs"
+OIDC_OP_AUTHORIZATION_ENDPOINT = "https://idp.int.identitysandbox.gov/openid_connect/authorize"
+OIDC_OP_TOKEN_ENDPOINT = "https://idp.int.identitysandbox.gov/api/openid_connect/token"
+OIDC_OP_USER_ENDPOINT = "https://idp.int.identitysandbox.gov/api/openid_connect/userinfo"
+# LOGIN_REDIRECT_URL = "http://www.google.com"
+# LOGOUT_REDIRECT_URL = "<URL path to redirect to after logout>"
 
 # DB settings
 DATABASES = {
@@ -248,6 +266,7 @@ LOGGING = {
             "propagate": False,
         },
         "hawc": {"handlers": ["null"], "propagate": False, "level": "INFO"},
+        "mozilla_django_oidc": {"handlers": ["console"], "level": "DEBUG"},
     },
 }
 
