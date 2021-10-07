@@ -16,6 +16,7 @@ class DataPanel extends Component {
             </div>
             /* TODO - 3. fix data */
             /* TODO - 4. get data from api? */
+            /* TODO - 5. extend/rename robHeatmap to robHeatmap and robBarchart */
         );
     }
 }
